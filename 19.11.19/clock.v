@@ -279,11 +279,11 @@ input		clk			;
 input		rst_n			;
 
 parameter	MODE_CLOCK = 1'b0	;
-parameter	MODE_SETUP = 1'b1	;//
+parameter	MODE_SETUP = 1'b1	;
 
 parameter	POS_SEC	= 2'b00		;
 parameter	POS_MIN	= 2'b01		;
-parameter	POS_HOUR= 2'b10		;//?? ?? ?? 
+parameter	POS_HOUR= 2'b10		;
 
 wire		clk_100hz		;
 nco		u0_nco(
@@ -457,8 +457,8 @@ wire		max_hit_hour	;
 
 
 
-controller	u_controller(	.o_mode		(		),
-				.o_position	(		),
+controller	u_controller(	.o_mode		( mode		),
+				.o_position	( 		),
 				.o_sec_clk	( sec_clk	),
 				.o_min_clk	( min_clk	),
 				.o_hour_clk	( hour_clk	),
@@ -543,7 +543,7 @@ led_disp	u_led_disp(	.o_seg		( o_seg		),
 				.o_seg_dp	( o_seg_dp	),
 				.o_seg_enb	( o_seg_enb	),
 				.i_six_digit_seg( six_digit_seg	),
-				.i_six_dp	( 6'h0		),
+				.i_six_dp	( 6'b010101	),//??,?,? ? 
 				.clk		( clk		),
 				.rst_n		( rst_n		));
 
