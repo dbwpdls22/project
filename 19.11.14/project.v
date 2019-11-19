@@ -280,9 +280,9 @@ input		rst_n			;
 parameter	MODE_CLOCK = 1'b0	;
 parameter	MODE_SETUP = 1'b1	;//
 
-parameter	POS_SEC	= 1'b0		;
-parameter	POS_MIN	= 1'b1		;
-parameter	POS_HOUR= 1'b1		;//?? ?? ?? 
+parameter	POS_SEC	= 2'b00		;
+parameter	POS_MIN	= 2'b01		;
+parameter	POS_HOUR= 2'b10		;//?? ?? ?? 
 
 wire		clk_100hz		;
 nco		u0_nco(
