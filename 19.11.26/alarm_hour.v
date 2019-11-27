@@ -247,6 +247,7 @@ endmodule
 //	--------------------------------------------------
 module	controller(
 		o_mode,
+		o_dp,
 		o_position,
 		o_alarm_en,
 		o_sec_clk,
@@ -269,6 +270,7 @@ module	controller(
 		rst_n);
 
 output		o_mode			;
+output		o_dp			;
 output		o_position		;
 output		o_alarm_en		;
 output		o_sec_clk		;
@@ -336,17 +338,22 @@ debounce	u3_debounce(
 		.clk		( clk_100hz	));
 
 reg	[1:0]	o_mode			;
+reg	[5:0]	o_dp			;
 always @(posedge sw0 or negedge rst_n) begin
 	if(rst_n == 1'b0) begin
 		o_mode <= MODE_CLOCK;
+		o_dp   <= 6'b010101;	// time dot
 	end else begin
 		if(o_mode >= MODE_ALARM) begin
 			o_mode <= MODE_CLOCK;
+			o_dp   <= 6'b010101; 	// time dot
 		end else begin
 			o_mode <= o_mode + 1'b1;
+			o_dp   <= o_mode + 1'b1;	//set up -> dot1, alarm -> dot2 
 		end
 	end
 end
+
 
 reg	[1:0]	o_position		;
 always @(posedge sw1 or negedge rst_n) begin
@@ -706,6 +713,7 @@ input		clk		;
 input		rst_n		;
 
 wire	[1:0]	mode		;
+wire	[5:0]	dp		;
 wire		position	;
 
 wire		sec_clk		;
@@ -728,6 +736,7 @@ wire		alarm_en	;
 
 
 controller	u_controller(	.o_mode			( mode			),
+				.o_dp			( dp			),
 				.o_position		( position		),
 				.o_alarm_en		( alarm_en		),
 				.o_sec_clk		( sec_clk		),
@@ -832,7 +841,7 @@ led_disp	u_led_disp(	.o_seg		( o_seg		),
 				.o_seg_dp	( o_seg_dp	),
 				.o_seg_enb	( o_seg_enb	),
 				.i_six_digit_seg( six_digit_seg	),
-				.i_six_dp	( 6'h0		),
+				.i_six_dp	( dp		),
 				.clk		( clk		),
 				.rst_n		( rst_n		));
 
@@ -843,5 +852,7 @@ buzz		u_buzz	(	.o_buzz		( o_alarm	),
 
 
 endmodule
+
+
 
 
